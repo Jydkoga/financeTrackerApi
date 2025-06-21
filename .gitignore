@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+#Virtual Environment
+venv
+
+#Environment Variables
+.env
+
+# SQLite or other local DBs
+*.sqlite3
+
+# VSCode settings (optional)
+.vscode/
+
+# Migrations (if you want to ignore generated versions — optional)
+migrations/versions/
+
+# OS-specific
+.DS_Store
