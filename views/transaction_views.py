@@ -8,12 +8,12 @@ from flask_cors import cross_origin
 
 transaction_bp = Blueprint('transaction', __name__)
 
-@transaction_bp.route('/,methods=["GET"]')
+@transaction_bp.route('/',methods=["GET"])
 @cross_origin()
 def get_transactions():
     try:
         transactions = Transaction.query.all()
-        return jsonify(transaction_schema.dump(transactions)), 200
+        return jsonify(transactions_schema.dump(transactions)), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 400
     
@@ -21,7 +21,7 @@ def get_transactions():
 def add_transaction():
     try:
         data = request.get_json()
-        new_transaction = transaction_schema.load(data)
+        new_transaction = transaction_schema.load(data, session=db.session)
         db.session.add(new_transaction)
         db.session.commit()
         return jsonify(transaction_schema.dump(new_transaction)), 201

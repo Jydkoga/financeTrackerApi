@@ -10,7 +10,7 @@ class TransactionGroup(db.Model):
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(255), nullable=True)
 
-    user = db.relationship('User', backref='transaction_groups', lazy=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)    
     transactions = db.relationship('Transaction', backref='transaction_group', lazy=True)
     date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
 
