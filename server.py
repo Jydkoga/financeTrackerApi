@@ -2,6 +2,7 @@ from flask import Flask
 from models import db
 from flask_cors import CORS
 from views.transaction_views import transaction_bp
+from views.transaction_group_views import transaction_group_bp
 from views.user_views import user_bp
 from flask_migrate import Migrate
 import os
@@ -22,6 +23,7 @@ def create_app():
 
     app.register_blueprint(transaction_bp, url_prefix='/transactions')
     app.register_blueprint(user_bp, url_prefix='/users')
+    app.register_blueprint(transaction_group_bp, url_prefix='/transaction_groups')
     
     return app
 
