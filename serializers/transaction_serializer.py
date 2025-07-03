@@ -10,9 +10,10 @@ class TransactionSchema(SQLAlchemySchema):
     title = auto_field(required=True)
     amount = auto_field(required=True)
     description = auto_field(allow_none=True)
-    date = auto_field(dump_only=True)
+    date_added = auto_field(dump_only=True)
+    date_spent = auto_field(allow_none=True)
     user_id = auto_field(required=True)
-    category_id = auto_field(dump_only=True)
+    category_id = auto_field(required=True)
     transaction_group_id = auto_field(required=True)
 
 transaction_schema = TransactionSchema()
