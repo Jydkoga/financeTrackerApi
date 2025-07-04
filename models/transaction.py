@@ -16,7 +16,7 @@ class Transaction(db.Model):
     
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
-    transaction_group_id = db.Column(db.Integer, db.ForeignKey('transaction_groups.id'), nullable=False)
+    transaction_group_id = db.Column(db.Integer, db.ForeignKey('transaction_groups.id'), nullable=True)
 
     def __repr__(self):
         return f'<Transaction {self.id} - {self.amount}>'

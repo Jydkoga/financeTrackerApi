@@ -40,3 +40,4 @@ def get_transaction_group(group_id):
         return jsonify(transaction_group_schema.dump(transaction_group)), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 400
+    

@@ -12,6 +12,7 @@ class TransactionSchema(SQLAlchemySchema):
     description = auto_field(allow_none=True)
     date_added = auto_field(dump_only=True)
     date_spent = auto_field(allow_none=True)
+    is_deleted = auto_field(dump_only=True)
     user_id = auto_field(required=True)
     category_id = auto_field(required=True)
     transaction_group_id = auto_field(required=True)
