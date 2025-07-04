@@ -16,7 +16,11 @@ transaction_bp = Blueprint('transaction', __name__)
 @cross_origin()
 def get_transactions():
     try:
-        transactions = Transaction.query.all()
+        user_id = request.args.get('user_id', type=int)
+        if user_id is None:
+            return jsonify({"error": "Missing user_id in query parameters"}), 400
+            
+        transactions = Transaction.query.filter_by(user_id=user_id, is_deleted=False).all()
         return jsonify(transactions_schema.dump(transactions)), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 400

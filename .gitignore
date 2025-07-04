@@ -21,3 +21,6 @@ migrations/versions/
 
 # OS-specific
 .DS_Store
+
+# Logs
+logfile
