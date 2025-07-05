@@ -14,3 +14,6 @@ class CategorySchema(SQLAlchemySchema):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+category_schema = CategorySchema()
+categories_schema = CategorySchema(many=True)
