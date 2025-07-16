@@ -3,6 +3,7 @@ from models.category import Category
 from marshmallow_sqlalchemy.fields import Nested
 from serializers.transaction_serializer import TransactionSchema
 
+
 class CategorySchema(SQLAlchemySchema):
     class Meta:
         model = Category
@@ -10,10 +11,12 @@ class CategorySchema(SQLAlchemySchema):
 
     id = auto_field()
     name = auto_field()
-    transactions = Nested(TransactionSchema, many=True, exclude=('category',))
-    
+    transactions = Nested(TransactionSchema, many=True)
+    user_id = auto_field(required=True)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
 
 category_schema = CategorySchema()
 categories_schema = CategorySchema(many=True)
