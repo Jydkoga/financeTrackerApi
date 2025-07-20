@@ -1,6 +1,7 @@
 from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
 from models.transaction import Transaction
 
+
 class TransactionSchema(SQLAlchemySchema):
     class Meta:
         model = Transaction
@@ -16,6 +17,8 @@ class TransactionSchema(SQLAlchemySchema):
     user_id = auto_field(required=True)
     category_id = auto_field(required=True)
     transaction_group_id = auto_field(required=True)
+    path_to_receipt = auto_field(allow_none=True)
+
 
 transaction_schema = TransactionSchema()
 transactions_schema = TransactionSchema(many=True)

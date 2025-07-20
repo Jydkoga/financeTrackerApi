@@ -6,10 +6,13 @@ from models.category import Category
 from models.user import User
 from serializers.transaction_serializer import transaction_schema, transactions_schema
 from flask_cors import cross_origin
-
 from marshmallow import ValidationError
+from PIL import Image
+import os
 
 transaction_bp = Blueprint("transaction", __name__)
+
+path_to_receipt = path_to_receipt = os.path.join(os.getcwd(), "receipts")
 
 
 @transaction_bp.route("/", methods=["GET"])
@@ -108,3 +111,54 @@ def remove_transaction(transaction_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 400
+
+
+@transaction_bp.route("/<int:transaction_id>/receipt/add", methods=["POST"])
+@cross_origin()
+def upload_receipt(transaction_id):
+    transaction_group_id = request.form.get("transaction_group_id")
+    if "receipt" in request.files:
+        image = request.files["receipt"]
+        if image.filename == "":
+            return jsonify({"error": "No selected file"}), 400
+
+        ext = os.path.splitext(image.filename)[1]  # includes dot
+        file_name = f"receipt_{transaction_id}{ext}"
+        path = os.path.join(path_to_receipt, str(transaction_group_id))
+
+        # Logic to store the receipt file at the specified path
+        if os.path.exists(path):
+            print("Transaction group directory exists:", path)
+        else:
+            print("Transaction group directory does not exist, creating it:", path)
+            os.makedirs(path)
+        if not os.path.exists(os.path.join(path, file_name)):
+            print("Storing receipt at path:", os.path.join(path, file_name))
+            image.save(os.path.join(path, file_name))
+        else:
+            print("Receipt already exists at path:", os.path.join(path, file_name))
+            return jsonify({"error": "Receipt already exists"}), 400
+        return (
+            jsonify({"message": "Receipt stored successfully", "receipt_path": path}),
+            201,
+        )
+    else:
+        return jsonify({"error": "No receipt file provided"}), 400
+
+
+# @transaction_bp.route("/<int:transaction_id>/receipt/get", methods=["GET"])
+# @cross_origin()
+# def get_receipt(transaction_id):
+#     transaction = Transaction.query.get(transaction_id)
+#     if not transaction or not transaction.path_to_receipt:
+#         return jsonify({"error": "Receipt not found"}), 404
+
+#     receipt_path = os.path.join(
+#         path_to_receipt,
+#         str(transaction.transaction_group_id),
+#         transaction.path_to_receipt,
+#     )
+#     if os.path.exists(receipt_path):
+#         return jsonify({"receipt_path": receipt_path}), 200
+#     else:
+#         return jsonify({"error": "Receipt file does not exist"}), 404
